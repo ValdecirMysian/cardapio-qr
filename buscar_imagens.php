@@ -49,7 +49,7 @@ if (isset($_GET['acao']) && $_GET['acao'] == 'buscar_auto') {
     error_reporting(E_ALL);
     
     // Limpar qualquer output anterior
-    if (ob_get_length()) ob_clean();
+    while (ob_get_level()) ob_end_clean();
     
     header('Content-Type: application/json');
     
