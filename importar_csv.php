@@ -473,31 +473,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                         ?>
                         <tr class="<?php echo $rowClass; ?>" id="row-<?php echo $i; ?>">
                             <td>
+                                <!-- Badges Dinâmicos -->
                                 <input type="text" class="form-control form-control-sm border-0 bg-transparent fw-bold" name="nome[<?php echo $i; ?>]" value="<?php echo htmlspecialchars($prod['nome']); ?>">
-                                <?php if ($prod['is_medicamento']): ?>
-                                    <span class="badge bg-danger badge-anvisa">Medicamento</span>
-                                <?php endif; ?>
-                                <?php if ($prod['is_fralda']): ?>
-                                    <span class="badge bg-info badge-anvisa">Fralda</span>
-                                <?php endif; ?>
+                                
+                                <span class="badge bg-danger badge-anvisa badge-medicamento <?php echo $prod['is_medicamento'] ? '' : 'd-none'; ?>">Medicamento</span>
+                                <span class="badge bg-info badge-anvisa badge-fralda <?php echo $prod['is_fralda'] ? '' : 'd-none'; ?>">Fralda</span>
+                                <span class="badge bg-warning text-dark badge-anvisa badge-leite <?php echo (isset($prod['is_leite']) && $prod['is_leite']) ? '' : 'd-none'; ?>" title="Regra ANVISA: Leites e fórmulas">Fórmula/Leite</span>
+                                
                                 <small class="d-block text-muted" style="font-size: 0.65em">Sugestão: <?php echo $prod['motor_cat_debug']; ?></small>
-                                <?php if (isset($prod['is_leite']) && $prod['is_leite']): ?>
-                                    <span class="badge bg-warning text-dark badge-anvisa" title="Regra ANVISA: Leites e fórmulas">Fórmula/Leite</span>
-                                <?php endif; ?>
                             </td>
                             
                             <td>
-                                <select class="form-select form-select-sm select-categoria" name="categoria[<?php echo $i; ?>]">
+                                <select class="form-select form-select-sm select-categoria" name="categoria[<?php echo $i; ?>]" onchange="atualizarLinha(this, <?php echo $i; ?>)">
                                     <?php foreach ($categoriasBanco as $cat): ?>
-                                        <option value="<?php echo $cat['id']; ?>" <?php echo ($cat['id'] == $prod['categoria_id']) ? 'selected' : ''; ?>>
+                                        <option value="<?php echo $cat['id']; ?>" 
+                                                data-nome="<?php echo mb_strtolower($cat['nome']); ?>"
+                                                <?php echo ($cat['id'] == $prod['categoria_id']) ? 'selected' : ''; ?>>
                                             <?php echo htmlspecialchars($cat['nome']); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
                             </td>
                             
-                            <td>
-                                <?php if ($prod['is_fralda']): ?>
+                            <td class="td-opcoes-especificas">
+                                <!-- UI FRALDA -->
+                                <div class="ui-fralda <?php echo $prod['is_fralda'] ? '' : 'd-none'; ?>">
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Tamanhos
@@ -519,16 +519,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
-                                <?php elseif ($prod['is_medicamento']): ?>
+                                    <!-- Inputs hidden para garantir envio de flags se JS falhar ou não alterar -->
+                                    <input type="hidden" name="is_fralda[<?php echo $i; ?>]" class="input-is-fralda" value="<?php echo $prod['is_fralda']; ?>">
+                                </div>
+
+                                <!-- UI MEDICAMENTO -->
+                                <div class="ui-medicamento <?php echo $prod['is_medicamento'] ? '' : 'd-none'; ?>">
                                     <select class="form-select form-select-sm" name="tarja[<?php echo $i; ?>]">
                                         <option value="sem_tarja" <?php echo ($prod['tarja_sugerida'] == 'sem_tarja') ? 'selected' : ''; ?>>Sem Tarja</option>
                                         <option value="amarela" <?php echo ($prod['tarja_sugerida'] == 'amarela') ? 'selected' : ''; ?>>Genérico</option>
                                         <option value="vermelha" <?php echo ($prod['tarja_sugerida'] == 'vermelha') ? 'selected' : ''; ?>>Vermelha</option>
                                         <option value="preta" <?php echo ($prod['tarja_sugerida'] == 'preta') ? 'selected' : ''; ?>>Preta</option>
                                     </select>
-                                <?php else: ?>
+                                    <input type="hidden" name="is_medicamento[<?php echo $i; ?>]" class="input-is-medicamento" value="<?php echo $prod['is_medicamento']; ?>">
+                                </div>
+
+                                <!-- UI DEFAULT -->
+                                <div class="ui-default <?php echo (!$prod['is_fralda'] && !$prod['is_medicamento']) ? '' : 'd-none'; ?>">
                                     <span class="text-muted small">-</span>
-                                <?php endif; ?>
+                                </div>
+                                
+                                <!-- Flag Leite Hidden -->
+                                <input type="hidden" name="is_leite[<?php echo $i; ?>]" class="input-is-leite" value="<?php echo $prod['is_leite']; ?>">
                             </td>
                             
                             <td>
@@ -569,6 +581,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
 function submeterImportacao() {
     if(confirm('Tem certeza que deseja importar estes produtos?')) {
         document.getElementById('formImportacao').submit();
+    }
+}
+
+function atualizarLinha(selectElement, index) {
+    // 1. Identificar a categoria selecionada
+    var option = selectElement.options[selectElement.selectedIndex];
+    var nomeCategoria = option.getAttribute('data-nome') || '';
+    
+    // 2. Definir flags baseadas no nome da categoria
+    var isFralda = (nomeCategoria.indexOf('fralda') !== -1 || nomeCategoria.indexOf('bebe') !== -1 || nomeCategoria.indexOf('infantil') !== -1);
+    // Refinando regra de fralda: se for bebe/infantil, pode não ser fralda, mas vamos assumir que o usuário quer ver opções de tamanho se selecionar algo infantil que tenha tamanhos.
+    // Melhor: Só ativa se tiver "fralda" no nome da categoria OU se o usuário selecionar explicitamente.
+    // Ajuste: A categoria "Fraldas e Higiene" contém "fralda". A categoria "Seção Infantil" não.
+    // Vamos ser mais específicos:
+    isFralda = (nomeCategoria.indexOf('fralda') !== -1);
+
+    var isMedicamento = (
+        nomeCategoria.indexOf('medicamento') !== -1 || 
+        nomeCategoria.indexOf('farmacia') !== -1 || 
+        nomeCategoria.indexOf('etico') !== -1 || 
+        nomeCategoria.indexOf('generico') !== -1 || 
+        nomeCategoria.indexOf('referencia') !== -1
+    );
+
+    var isLeite = (
+        nomeCategoria.indexOf('leite') !== -1 || 
+        nomeCategoria.indexOf('formula') !== -1 ||
+        nomeCategoria.indexOf('lacteo') !== -1
+    );
+
+    // 3. Selecionar elementos da linha
+    var row = document.getElementById('row-' + index);
+    
+    // Badges
+    var badgeFralda = row.querySelector('.badge-fralda');
+    var badgeMedicamento = row.querySelector('.badge-medicamento');
+    var badgeLeite = row.querySelector('.badge-leite');
+
+    // UI Containers
+    var uiFralda = row.querySelector('.ui-fralda');
+    var uiMedicamento = row.querySelector('.ui-medicamento');
+    var uiDefault = row.querySelector('.ui-default');
+
+    // Hidden Inputs
+    var inputIsFralda = row.querySelector('.input-is-fralda');
+    var inputIsMedicamento = row.querySelector('.input-is-medicamento');
+    var inputIsLeite = row.querySelector('.input-is-leite');
+
+    // 4. Atualizar Badges e Inputs
+    if (isFralda) {
+        badgeFralda.classList.remove('d-none');
+        inputIsFralda.value = '1';
+    } else {
+        badgeFralda.classList.add('d-none');
+        inputIsFralda.value = '0';
+    }
+
+    if (isMedicamento) {
+        badgeMedicamento.classList.remove('d-none');
+        row.classList.add('row-medicamento');
+        inputIsMedicamento.value = '1';
+    } else {
+        badgeMedicamento.classList.add('d-none');
+        row.classList.remove('row-medicamento');
+        inputIsMedicamento.value = '0';
+    }
+
+    if (isLeite) {
+        badgeLeite.classList.remove('d-none');
+        inputIsLeite.value = '1';
+    } else {
+        badgeLeite.classList.add('d-none');
+        inputIsLeite.value = '0';
+    }
+
+    // 5. Atualizar Interface (Prioridade: Fralda > Medicamento > Default)
+    // Esconder tudo primeiro
+    uiFralda.classList.add('d-none');
+    uiMedicamento.classList.add('d-none');
+    uiDefault.classList.add('d-none');
+
+    if (isFralda) {
+        uiFralda.classList.remove('d-none');
+    } else if (isMedicamento) {
+        uiMedicamento.classList.remove('d-none');
+    } else {
+        uiDefault.classList.remove('d-none');
     }
 }
 </script>
