@@ -1,0 +1,5 @@
+config/
+uploads/*
+!uploads/.gitkeep
+*.log
+.DS_Store
