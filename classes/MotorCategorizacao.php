@@ -43,7 +43,7 @@ class MotorCategorizacao {
         $str = preg_replace('/[ÓÒÕÔÖ]/u', 'O', $str);
         $str = preg_replace('/[ÚÙÛÜ]/u', 'U', $str);
         $str = preg_replace('/[Ç]/u', 'C', $str);
-        $str = preg_replace('/[^A-Z0-9\s]/', '', $str); // Remove caracteres especiais
+        $str = preg_replace('/[^A-Z0-9\s]/', '', $str);
         $str = trim($str);
         
         return $str;
@@ -51,6 +51,7 @@ class MotorCategorizacao {
 
     /**
      * CAMADA 1: Mapeamento Direto por Grupo CSV
+     * Retorna apenas a categoria principal (sem subcategoria)
      */
     public function categorizarPorGrupo($grupoCsv) {
         if (empty($grupoCsv)) {
@@ -61,13 +62,12 @@ class MotorCategorizacao {
 
         // Tenta encontrar correspondência exata no mapeamento
         if (isset($this->mapeamento[$grupoNormalizado])) {
-            $caminhoCategoria = $this->mapeamento[$grupoNormalizado];
-            $partes = explode('/', $caminhoCategoria);
+            $categoria = $this->mapeamento[$grupoNormalizado];
             
             return [
-                'categoria' => $caminhoCategoria,
-                'categoria_principal' => $partes[0] ?? null,
-                'subcategoria' => $partes[1] ?? null,
+                'categoria' => $categoria,
+                'categoria_principal' => $categoria,
+                'subcategoria' => null,
                 'confianca' => 0.95,
                 'metodo' => 'mapeamento_csv_direto',
                 'origem' => $grupoCsv
@@ -79,6 +79,7 @@ class MotorCategorizacao {
 
     /**
      * CAMADA 2: Matching por Keywords no Nome
+     * Retorna apenas a categoria principal (sem subcategoria)
      */
     public function categorizarPorNome($nomeProduto) {
         if (empty($nomeProduto)) {
@@ -93,61 +94,85 @@ class MotorCategorizacao {
 
         // Percorre toda a taxonomia procurando matches
         foreach ($this->taxonomia as $catKey => $catData) {
-            if (!isset($catData['subcategorias'])) continue;
+            $score = 0;
+            $matches = [];
 
-            foreach ($catData['subcategorias'] as $subKey => $subData) {
-                $score = 0;
-                $matches = [];
-
-                // 1. Verifica Keywords
-                if (isset($subData['keywords'])) {
-                    foreach ($subData['keywords'] as $keyword) {
-                        $keywordNorm = $this->normalizarString($keyword);
-                        // Verifica se a keyword existe como palavra inteira nos tokens
+            // 1. Verifica Keywords
+            if (isset($catData['keywords'])) {
+                foreach ($catData['keywords'] as $keyword) {
+                    $keywordNorm = $this->normalizarString($keyword);
+                    
+                    // Keyword pode ter múltiplas palavras (ex: "protetor solar")
+                    $keywordTokens = explode(' ', $keywordNorm);
+                    
+                    if (count($keywordTokens) == 1) {
+                        // Keyword de palavra única
                         if (in_array($keywordNorm, $tokens)) {
-                            $score += 0.4; // Peso alto para keyword exata
+                            $score += 0.4;
+                            $matches[] = $keyword;
+                        }
+                    } else {
+                        // Keyword de múltiplas palavras
+                        if (strpos($nomeNormalizado, $keywordNorm) !== false) {
+                            $score += 0.5; // Peso maior para match de frase completa
                             $matches[] = $keyword;
                         }
                     }
                 }
+            }
 
-                // 2. Verifica Marcas
-                if (isset($subData['marcas'])) {
-                    foreach ($subData['marcas'] as $marca) {
-                        $marcaNorm = $this->normalizarString($marca);
-                        if (in_array($marcaNorm, $tokens)) {
-                            $score += 0.3; // Peso médio para marca
-                            $matches[] = $marca;
+            // 2. Verifica Marcas
+            if (isset($catData['marcas'])) {
+                foreach ($catData['marcas'] as $marca) {
+                    $marcaNorm = $this->normalizarString($marca);
+                    
+                    // Marca pode ter múltiplas palavras (ex: "johnson baby")
+                    if (strpos($nomeNormalizado, $marcaNorm) !== false) {
+                        $score += 0.3;
+                        $matches[] = $marca;
+                    }
+                }
+            }
+
+            // 3. Verifica Princípios Ativos (se houver)
+            if (isset($catData['principios_ativos'])) {
+                foreach ($catData['principios_ativos'] as $ativo) {
+                    $ativoNorm = $this->normalizarString($ativo);
+                    if (strpos($nomeNormalizado, $ativoNorm) !== false) {
+                        $score += 0.5;
+                        $matches[] = $ativo;
+                    }
+                }
+            }
+
+            // 4. Verifica Sufixos (se houver - útil para antibióticos)
+            if (isset($catData['sufixos'])) {
+                foreach ($catData['sufixos'] as $sufixo) {
+                    $sufixoNorm = $this->normalizarString($sufixo);
+                    // Sufixo deve aparecer no final de alguma palavra
+                    foreach ($tokens as $token) {
+                        if (substr($token, -strlen($sufixoNorm)) === $sufixoNorm) {
+                            $score += 0.3;
+                            $matches[] = $sufixo;
+                            break;
                         }
                     }
                 }
+            }
 
-                // 3. Verifica Princípios Ativos (se houver)
-                if (isset($subData['principios_ativos'])) {
-                    foreach ($subData['principios_ativos'] as $ativo) {
-                        $ativoNorm = $this->normalizarString($ativo);
-                        // Princípio ativo pode ser composto (ex: "DIPIRONA SODICA")
-                        if (strpos($nomeNormalizado, $ativoNorm) !== false) {
-                            $score += 0.5; // Peso muito alto para princípio ativo
-                            $matches[] = $ativo;
-                        }
-                    }
-                }
+            // Normaliza o score (max 1.0)
+            $score = min($score, 1.0);
 
-                // Normaliza o score (max 1.0)
-                $score = min($score, 1.0);
-
-                if ($score > $maiorScore) {
-                    $maiorScore = $score;
-                    $melhorCategoria = [
-                        'categoria' => "$catKey/$subKey",
-                        'categoria_principal' => $catKey,
-                        'subcategoria' => $subKey,
-                        'confianca' => $score,
-                        'metodo' => 'keywords_nome',
-                        'matches' => $matches
-                    ];
-                }
+            if ($score > $maiorScore) {
+                $maiorScore = $score;
+                $melhorCategoria = [
+                    'categoria' => $catKey,
+                    'categoria_principal' => $catKey,
+                    'subcategoria' => null,
+                    'confianca' => $score,
+                    'metodo' => 'keywords_nome',
+                    'matches' => $matches
+                ];
             }
         }
 
@@ -156,48 +181,80 @@ class MotorCategorizacao {
 
     /**
      * CAMADA 5: Fallback Heurístico
-     * Tenta adivinhar com base em padrões genéricos ou define "Outros"
+     * Tenta adivinhar com base em padrões genéricos
      */
     public function fallbackHeuristico($dadosProduto) {
         $nome = $this->normalizarString($dadosProduto['nome'] ?? '');
         
-        // Regra A: Se tem dosagem (MG/ML/G) + Números -> Provavelmente Medicamento
-        // MAS precisamos ter cuidado com suplementos e dermocosméticos que também usam isso.
-        // Vamos restringir para formas farmacêuticas claras.
-        if (preg_match('/[0-9]+(MG|ML|G|CPR|CPS|COMP|CP|CAPS|DRG)/', $nome)) {
+        // Regra A: Se tem dosagem farmacêutica clara -> Medicamentos
+        // Mas exclui cosméticos e suplementos
+        if (preg_match('/[0-9]+(MG|MCG|ML|G|CPR|CPS|COMP|CP|CAPS|DRG)\b/', $nome)) {
             
-            // Exceções claras que NÃO são medicamentos
-            if (strpos($nome, 'SHAMPOO') !== false || strpos($nome, 'CONDICIONADOR') !== false || strpos($nome, 'SABONETE') !== false || strpos($nome, 'CREME') !== false || strpos($nome, 'GEL') !== false || strpos($nome, 'LOCAO') !== false || strpos($nome, 'SERUM') !== false || strpos($nome, 'PROTETOR') !== false) {
-                 // Deixa passar para o próximo fallback ou define como cosmético
-            } else {
+            // Exceções que NÃO são medicamentos
+            $excecoes = ['SHAMPOO', 'CONDICIONADOR', 'SABONETE', 'CREME', 'GEL', 'LOCAO', 
+                        'SERUM', 'PROTETOR', 'HIDRATANTE', 'WHEY', 'PROTEINA', 'CREATINA'];
+            
+            $ehExcecao = false;
+            foreach ($excecoes as $exc) {
+                if (strpos($nome, $exc) !== false) {
+                    $ehExcecao = true;
+                    break;
+                }
+            }
+            
+            if (!$ehExcecao) {
                 return [
-                    'categoria' => 'medicamentos/outros',
+                    'categoria' => 'medicamentos',
                     'categoria_principal' => 'medicamentos',
-                    'subcategoria' => 'outros',
-                    'confianca' => 0.3,
+                    'subcategoria' => null,
+                    'confianca' => 0.4,
                     'metodo' => 'fallback_dosagem',
                     'requer_revisao' => true
                 ];
             }
         }
 
-        // Regra B: Se tem "KIT" ou "PRESENTE" -> Perfumaria
-        if (strpos($nome, 'KIT') !== false || strpos($nome, 'PRESENTE') !== false) {
+        // Regra B: Fralda por tamanho
+        if (preg_match('/\b(RN|RECEM NASCIDO)\b/', $nome) || 
+            preg_match('/FR\s+(RN|P|M|G|XG|XXG)/', $nome)) {
             return [
-                'categoria' => 'perfumaria/kits',
-                'categoria_principal' => 'perfumaria',
-                'subcategoria' => 'kits',
-                'confianca' => 0.4,
-                'metodo' => 'fallback_kit',
+                'categoria' => 'fraldas_higiene',
+                'categoria_principal' => 'fraldas_higiene',
+                'subcategoria' => null,
+                'confianca' => 0.5,
+                'metodo' => 'fallback_fralda',
                 'requer_revisao' => true
             ];
         }
 
-        // Regra C: Padrão Genérico
+        // Regra C: Genérico - vai para categoria mais provável baseada em palavras-chave básicas
+        $categoriasBasicas = [
+            'medicamentos' => ['MEDICAMENTO', 'REMEDIO', 'GENERICO', 'SIMILAR'],
+            'higiene' => ['HIGIENE', 'BANHO', 'DENTAL', 'BUCAL'],
+            'suplementos' => ['SUPLEMENTO', 'VITAMINA'],
+            'perfumaria' => ['PERFUME', 'COLONIA', 'BATOM']
+        ];
+        
+        foreach ($categoriasBasicas as $cat => $palavras) {
+            foreach ($palavras as $palavra) {
+                if (strpos($nome, $palavra) !== false) {
+                    return [
+                        'categoria' => $cat,
+                        'categoria_principal' => $cat,
+                        'subcategoria' => null,
+                        'confianca' => 0.3,
+                        'metodo' => 'fallback_palavra_chave',
+                        'requer_revisao' => true
+                    ];
+                }
+            }
+        }
+
+        // Padrão absoluto: Não conseguiu classificar
         return [
-            'categoria' => 'outros/outros',
+            'categoria' => 'outros',
             'categoria_principal' => 'outros',
-            'subcategoria' => 'outros',
+            'subcategoria' => null,
             'confianca' => 0.1,
             'metodo' => 'fallback_padrao',
             'requer_revisao' => true
@@ -256,7 +313,7 @@ class MotorCategorizacao {
             }
         }
 
-        // 3. (Futuro) API Externa
+        // 3. (Futuro) API Externa por EAN
         // 4. (Futuro) ML
 
         // 5. Fallback Heurístico (Camada 5 - Confiança Baixa)

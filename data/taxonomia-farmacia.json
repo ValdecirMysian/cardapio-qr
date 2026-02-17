@@ -1,180 +1,217 @@
 {
   "medicamentos": {
     "label": "Medicamentos",
-    "icon": "💊",
-    "subcategorias": {
-      "analgesicos": {
-        "label": "Analgésicos e Antitérmicos",
-        "keywords": ["dipirona", "paracetamol", "ibuprofeno", "aspirina", "dor", "febre"],
-        "marcas": ["neosaldina", "tylenol", "advil"],
-        "principios_ativos": ["dipirona sodica", "paracetamol", "ibuprofeno"]
-      },
-      "antibioticos": {
-        "label": "Antibióticos",
-        "keywords": ["amoxicilina", "azitromicina", "cefalexina", "antibiotico"],
-        "marcas": ["amoxil", "azitromicina", "clavulin"],
-        "sufixos": ["cilina", "micina", "xacina"]
-      },
-      "antialergicos": {
-        "label": "Antialérgicos",
-        "keywords": ["loratadina", "desloratadina", "allegra", "alergia", "histamin"],
-        "marcas": ["allegra", "claritin", "zyrtec"]
-      }
-    }
+    "keywords": [
+      "dipirona", "paracetamol", "ibuprofeno", "aspirina", "novalgina", "dorflex", "neosaldina", "tylenol", "advil", "anador", "doril",
+      "amoxicilina", "azitromicina", "cefalexina", "clavulanato", "antibiotico", "amoxil", "clavulin",
+      "loratadina", "desloratadina", "allegra", "claritin", "zyrtec", "antialergico", "cetirizina",
+      "omeprazol", "pantoprazol", "esomeprazol", "lansoprazol", "losec", "nexium", "pantozol", "prazol",
+      "buscopan", "escopolamina", "colica", "antiespasmódico",
+      "diclofenaco", "nimesulida", "cetoprofeno", "cataflan", "voltaren", "nisulid", "antiinflamatorio",
+      "fluoxetina", "sertralina", "rivotril", "clonazepam", "alprazolam", "antidepressivo",
+      "losartana", "enalapril", "captopril", "atenolol", "pressao", "hipertensao",
+      "metformina", "glibenclamida", "glifage", "diabetes", "insulina", "glicemia",
+      "anticoncepcional", "diane", "selene", "yasmin", "pilula", "contraceptivo",
+      "dipirona sodica", "acido acetilsalicilico", "paracetamol",
+      "mg", "mcg", "comprimido", "capsula", "dragea", "suspensao", "xarope", "gotas", "ml", "cp", "cpr", "caps",
+      "generico", "similar", "remedio", "medicamento", "tarja", "receita"
+    ],
+    "marcas": [
+      "neosaldina", "tylenol", "advil", "novalgina", "dorflex", "anador", "doril", "aspirina", "melhoral",
+      "amoxil", "clavulin", "velamox",
+      "allegra", "claritin", "zyrtec", "polaramine", "hixizine",
+      "losec", "pantozol", "nexium", "pantoprazol", "omeprazol",
+      "buscopan", "cataflan", "voltaren", "nisulid", "scaflan",
+      "ems", "medley", "sanofi", "eurofarma", "teuto", "neo quimica", "geolab", "prati"
+    ],
+    "principios_ativos": ["dipirona", "paracetamol", "ibuprofeno", "amoxicilina", "azitromicina", "loratadina", "omeprazol", "escopolamina"],
+    "sufixos": ["cilina", "micina", "xacina", "floxacino", "prazol", "pam", "lol", "sona"]
   },
-  "higiene": {
-    "label": "Higiene Pessoal",
-    "icon": "🧴",
-    "subcategorias": {
-      "oral": {
-        "label": "Higiene Bucal",
-        "keywords": ["escova", "creme dental", "pasta", "fio dental", "enxaguante", "bucal", "dental", "antisseptico", "higiene"],
-        "marcas": ["colgate", "oral-b", "sensodyne", "listerine", "sorriso", "curaprox"]
-      },
-      "corporal": {
-        "label": "Higiene Corporal",
-        "keywords": ["sabonete", "desodorante", "shampoo", "condicionador", "gel banho", "antitranspirante", "aerosol", "roll-on", "intimo", "intima", "absorvente", "papel higienico", "lenco", "algodao", "cotonete", "haste"],
-        "marcas": ["dove", "nivea", "rexona", "johnson", "seda", "pantene", "intimus", "always", "neve"]
-      },
-      "barba": {
-        "label": "Barba e Depilação",
-        "keywords": ["barbear", "espuma", "lamina", "gillette", "pos-barba", "depilatorio", "cera"],
-        "marcas": ["gillette", "bozzano", "nivea men", "bic"]
-      }
-    }
-  },
-  "suplementos": {
-    "label": "Vitaminas e Suplementos",
-    "icon": "💪",
-    "subcategorias": {
-      "vitaminas": {
-        "label": "Vitaminas e Minerais",
-        "keywords": ["vitamina", "complexo b", "polivitaminico", "multivitaminico", "calcio", "ferro", "magnesio", "zinco", "omega 3", "lavitan", "centrum", "suplevit"],
-        "marcas": ["lavitan", "centrum", "suplevit", "bayer", "cimede"]
-      },
-      "academia": {
-        "label": "Nutrição Esportiva",
-        "keywords": ["whey", "creatina", "bcaa", "proteina", "albumina", "pre-treino", "glutamina", "hipercalorico"],
-        "marcas": ["max titanium", "integralmedica", "probiotica", "darkness"]
-      }
-    }
-  },
-  "leites_formulas": {
-    "label": "Leites e Fórmulas",
-    "icon": "🍼",
-    "subcategorias": {
-      "formulas": {
-        "label": "Fórmulas Infantis",
-        "keywords": ["formula", "infantil", "nan", "aptamil", "nestogeno", "enfamil", "milnutri", "ninho", "neslac", "mucilon", "leite em po", "composto lacteo", "aptamil pro", "aptamil profutura", "aptamil premium", "nan supreme", "nan comfor", "nan sensitive", "nan soja", "nan lac", "novamil", "pregomim", "alfamino", "neocate"],
-        "marcas": ["nestle", "danone", "mead johnson"]
-      }
-    }
-  },
-  "bebes": {
-    "label": "Bebês e Infantil",
-    "icon": "👶",
-    "subcategorias": {
-      "fraldas": {
-        "label": "Fraldas",
-        "keywords": ["fralda", "fralda descartavel", "fr", "fr.", "fral"],
-        "marcas": ["pampers", "huggies", "cremer", "turma monica", "babysec", "pompom", "mamypoko"],
-        "tamanhos": ["rn", "p", "m", "g", "xg", "xxg"]
-      }
-    }
-  },
-  "perfumaria": {
-    "label": "Perfumaria e Beleza",
-    "icon": "💄",
-    "subcategorias": {
-      "perfumes": {
-        "label": "Perfumes e Colônias",
-        "keywords": ["perfume", "colonia", "deo colonia", "eau de toilette", "fragrancia", "body splash", "desodorante colonia", "parfum", "presente", "kit"],
-        "marcas": ["boticario", "natura", "avon", "jequiti", "calvin klein", "carolina herrera", "eudora", "quem disse berenice"]
-      },
-      "maquiagem": {
-        "label": "Maquiagem",
-        "keywords": ["batom", "rimel", "base", "po facial", "sombra", "delineador", "esmalte", "corretivo", "blush", "iluminador", "primer", "fixador", "pincel"],
-        "marcas": ["vult", "dailus", "maybelline", "risqué", "colorama", "tracta", "boca rosa", "mari maria"]
-      },
-      "skincare": {
-        "label": "Cuidados com a Pele",
-        "keywords": ["hidratante", "anti-idade", "agua micelar", "esfoliante", "mascara facial", "serum", "vitamina c", "acido hialuronico", "protetor solar", "solar", "fps"],
-        "marcas": ["nivea", "neutrogena", "loreal", "garnier", "la roche", "vichy", "cerave"]
-      },
-      "cabelos": {
-        "label": "Tratamento Capilar",
-        "keywords": ["tintura", "coloracao", "tonalizante", "mascara capilar", "oleo capilar", "reparador", "creme pentear", "leave-in"],
-        "marcas": ["loreal", "garnier", "niely", "koleston", "cor e ton"]
-      }
-    }
-  },
+  
   "dermocosmeticos": {
     "label": "Dermocosméticos",
-    "icon": "✨",
-    "subcategorias": {
-      "rosto": {
-        "label": "Rosto",
-        "keywords": ["anti-idade", "rugas", "clareador", "acne", "oleosidade", "limpeza facial", "agua termal", "dermo"],
-        "marcas": ["la roche-posay", "vichy", "skinceuticals", "roc", "bioderma", "avene"]
-      },
-      "corpo": {
-        "label": "Corpo",
-        "keywords": ["hidratante corporal", "celulite", "estrias", "reafirmante"],
-        "marcas": ["cerave", "cetaphil", "isdin"]
-      },
-      "solar": {
-        "label": "Proteção Solar",
-        "keywords": ["protetor solar", "bloqueador", "pos-sol", "bronzeador", "fps 30", "fps 50", "fps 70"],
-        "marcas": ["anasol", "sundown", "loreal solar", "episol", "minesol"]
-      }
-    }
+    "keywords": [
+      "protetor solar", "protecao solar", "bloqueador", "fps", "anthelios", "episol", "minesol", "sundown", "anasol",
+      "hidratante facial", "anti idade", "anti rugas", "serum", "vitamina c", "acido hialuronico",
+      "acne", "oleosidade", "effaclar", "gel secativo", "adstringente",
+      "agua micelar", "demaquilante", "tonico", "limpeza facial", "sabonete facial",
+      "cerave", "cetaphil", "la roche", "vichy", "roc", "bioderma", "avene", "eucerin",
+      "dermatologico", "dermocosmetico", "dermo", "dermatologia"
+    ],
+    "marcas": [
+      "la roche posay", "la roche-posay", "vichy", "cerave", "cetaphil",
+      "roc", "bioderma", "avene", "eucerin", "isdin", "neutrogena",
+      "skinceuticals", "episol", "minesol", "sundown", "anasol", "loreal solar"
+    ]
   },
+  
+  "suplementos": {
+    "label": "Suplementos",
+    "keywords": [
+      "vitamina", "complexo b", "vitamina c", "vitamina d", "vitamina e", "vitamina a",
+      "polivitaminico", "multivitaminico", "centrum", "lavitan", "supradyn", "pharmaton",
+      "omega 3", "omega-3", "oleo de peixe", "colageno", "colagênio", "colágenio",
+      "whey", "whey protein", "proteina", "creatina", "bcaa", "albumina", "glutamina",
+      "termogenico", "emagrecedor", "queimador", "cafeina",
+      "calcio", "ferro", "zinco", "magnesio", "selenio", "potassio",
+      "suplemento", "suplemento alimentar", "nutricional"
+    ],
+    "marcas": [
+      "centrum", "lavitan", "supradyn", "pharmaton", "redoxon", "addera", "depura",
+      "max titanium", "integralmedica", "integralmédica", "growth", "darkness", "probiotica", "probiótica",
+      "optimum nutrition", "vitafor", "essential", "naturalis", "atlhetica", "athletica"
+    ]
+  },
+  
+  "higiene": {
+    "label": "Higiene",
+    "keywords": [
+      "escova dental", "creme dental", "pasta de dente", "pasta dental", "fio dental", "enxaguante bucal", "antisseptico bucal", "enxaguatorio",
+      "colgate", "oral-b", "oral b", "sensodyne", "listerine", "cepacol", "sorriso", "close up",
+      "sabonete", "sabonete liquido", "gel de banho", "sabonete barra",
+      "shampoo", "condicionador", "mascara capilar", "creme para pentear", "leave in", "leave-in",
+      "desodorante", "antitranspirante", "aerosol", "roll on", "roll-on", "stick",
+      "absorvente", "absorvente interno", "sempre livre", "intimus", "ob", "modess",
+      "papel higienico", "papel higiênico", "lenco de papel", "guardanapo",
+      "algodao", "algodão", "cotonete", "haste flexivel", "haste flexível",
+      "sabonete intimo", "sabonete íntimo", "gel intimo", "gel íntimo",
+      "dove", "nivea", "rexona", "palmolive", "protex", "johnson", "clear", "seda", "pantene", "head shoulders"
+    ],
+    "marcas": [
+      "colgate", "oral-b", "oral b", "sensodyne", "listerine", "cepacol", "sorriso",
+      "dove", "nivea", "rexona", "lux", "palmolive", "protex", "granado", "johnson",
+      "clear", "seda", "pantene", "tresemme", "tresemmé", "elseve", "head shoulders",
+      "sempre livre", "intimus", "ob", "modess", "carefree",
+      "neve", "personal", "scott", "sublime", "familia", "familia"
+    ]
+  },
+  
+  "equipamentos": {
+    "label": "Equipamentos",
+    "keywords": [
+      "termometro", "termômetro", "medidor de pressao", "medidor de pressão", "pressao arterial",
+      "glicosimetro", "glicosímetro", "glicemia", "oximetro", "oxímetro", "saturacao",
+      "balanca", "balança", "peso",
+      "nebulizador", "inalador", "umidificador",
+      "seringa", "agulha", "lanceta",
+      "aparelho", "medidor", "digital"
+    ],
+    "marcas": [
+      "gtech", "g-tech", "omron", "multilaser", "premium", "ns", "soniclear", "accu-chek", "accucheck"
+    ]
+  },
+  
+  "leites_formulas": {
+    "label": "Leites e Fórmulas",
+    "keywords": [
+      "nan", "aptamil", "formula", "fórmula", "formula infantil", "fórmula infantil", "leite bebe", "leite bebê",
+      "milupa", "enfamil", "nestogeno", "nestógeno",
+      "nan supreme", "nan comfor", "nan sensitive", "nan pro", "nan soja", "nan ar", "nan lac",
+      "aptamil profutura", "aptamil premium", "aptamil essensis",
+      "ninho", "neslac", "mucilon", "milnutri", "composto lacteo", "composto lácteo",
+      "leite em po", "leite em pó", "formula"
+    ],
+    "marcas": [
+      "nan", "aptamil", "milupa", "enfamil", "nestogeno", "nestógeno", "nestle", "nestlé", "danone",
+      "ninho", "neslac", "mucilon", "italac", "piracanjuba", "milnutri"
+    ]
+  },
+  
+  "cuidados_bebes": {
+    "label": "Cuidados para Bebês",
+    "keywords": [
+      "pomada", "assadura", "dermatite", "hipoglos", "hipoglós", "bepantol", "desitin", "dermodex", "preventor",
+      "shampoo bebe", "shampoo bebê", "sabonete bebe", "sabonete bebê", "oleo bebe", "óleo bebê",
+      "colonia bebe", "colônia bebê", "johnson baby",
+      "mamadeira", "bico", "chupeta", "copo treinamento",
+      "banheira", "toalha fralda", "toalha capuz",
+      "bebe", "bebê", "baby", "infantil", "recem nascido", "recém nascido"
+    ],
+    "marcas": [
+      "hipoglos", "hipoglós", "bepantol", "desitin", "dermodex", "preventor",
+      "johnson", "johnson baby", "johnsons",
+      "avent", "philips avent", "nuk", "lillo", "kuka", "mam", "chicco"
+    ]
+  },
+  
+  "secao_infantil": {
+    "label": "Seção Infantil",
+    "keywords": [
+      "papinha", "suco infantil", "bolacha infantil", "snack", "nutriben",
+      "escova dental infantil", "pente infantil", "cortador de unha",
+      "brinquedo", "mordedor",
+      "infantil", "crianca", "criança", "kids"
+    ],
+    "marcas": [
+      "nestle", "nestlé", "nutriben", "milupa", "heinz",
+      "nuk", "chicco", "galzerano", "burigotto", "safety"
+    ]
+  },
+  
+  "fraldas_higiene": {
+    "label": "Fraldas e Higiene",
+    "keywords": [
+      "fralda", "fralda descartavel", "fralda descartável", "fralda desc", "fr", "fr.", "fral",
+      "supersec", "supreme care", "confort sec", "total comfort", "premium care",
+      "lenco umedecido", "lenço umedecido", "toalha umedecida", "wipes",
+      "rn", "p", "m", "g", "xg", "xxg", "recém-nascido", "recem nascido", "recem-nascido"
+    ],
+    "marcas": [
+      "pampers", "huggies", "cremer", "turma monica", "turma mônica", "babysec", "pompom", "pom pom", "mamypoko", "personal baby"
+    ],
+    "tamanhos": ["rn", "p", "m", "g", "xg", "xxg"]
+  },
+  
+  "perfumaria": {
+    "label": "Perfumaria",
+    "keywords": [
+      "perfume", "colonia", "colônia", "deo colonia", "deo colônia", "eau de toilette", "fragrancia", "body splash",
+      "batom", "rimel", "rímel", "mascara", "máscara", "base", "po facial", "pó facial", "sombra", "delineador", "esmalte",
+      "hidratante corporal", "mascara facial", "esfoliante",
+      "tintura", "coloracao", "coloração", "tonalizante", "leave in",
+      "malbec", "kaiak", "luna", "humor", "biografia", "ekos",
+      "boticario", "o boticário", "natura", "avon", "jequiti", "eudora"
+    ],
+    "marcas": [
+      "boticario", "o boticario", "o boticário", "natura", "avon", "jequiti", "eudora", "quem disse berenice",
+      "vult", "dailus", "maybelline", "risque", "risqué", "colorama", "ruby rose", "tracta",
+      "nivea", "neutrogena", "loreal", "l'oreal", "garnier", "giovanna baby", "truss"
+    ]
+  },
+  
   "ortopedia": {
-    "label": "Ortopedia e Acessórios",
-    "icon": "🩼",
-    "subcategorias": {
-      "imobilizadores": {
-        "label": "Imobilizadores",
-        "keywords": ["joelheira", "tornozeleira", "munhequeira", "tipoia", "colar cervical", "cinta", "faixa"],
-        "marcas": ["mercur", "hidrolight", "ortofly"]
-      },
-      "meias": {
-        "label": "Meias Compressivas",
-        "keywords": ["meia compressiva", "meia elastica", "kendall", "sigvaris"],
-        "marcas": ["kendall", "sigvaris", "venosan"]
-      },
-      "bengalas": {
-        "label": "Auxilio Locomoção",
-        "keywords": ["bengala", "muleta", "andador"],
-        "marcas": ["mercur", "dullio"]
-      }
-    }
+    "label": "Ortopedia",
+    "keywords": [
+      "joelheira", "tornozeleira", "munhequeira", "tipoia", "colar cervical", "cinta", "faixa", "suporte",
+      "meia compressiva", "meia elastica", "meia elástica", "kendall", "sigvaris",
+      "bengala", "muleta", "andador", "cadeira de rodas",
+      "ortopedico", "ortopédico", "ortopedia", "imobilizador"
+    ],
+    "marcas": [
+      "mercur", "hidrolight", "ortofly", "kendall", "sigvaris", "venosan", "dullio", "dúllio", "salvape", "salvapé"
+    ]
   },
+  
   "primeiros_socorros": {
     "label": "Primeiros Socorros",
-    "icon": "🩹",
-    "subcategorias": {
-      "curativos": {
-        "label": "Curativos",
-        "keywords": ["band-aid", "curativo", "esparadrapo", "gaze", "atadura", "micropore", "algodao", "antisseptico", "agua oxigenada", "alcool 70", "povidine", "merthiolate"],
-        "marcas": ["band-aid", "cremer", "neve", "mercur"]
-      }
-    }
+    "keywords": [
+      "band-aid", "band aid", "curativo", "esparadrapo", "gaze", "atadura", "micropore",
+      "algodao", "algodão", "antisseptico", "antisséptico", "agua oxigenada", "água oxigenada",
+      "alcool 70", "álcool 70", "alcool", "álcool", "povidine", "merthiolate", "iodo"
+    ],
+    "marcas": [
+      "band-aid", "cremer", "neve", "mercur", "nexcare"
+    ]
   },
+  
   "aparelhos": {
-    "label": "Aparelhos e Testes",
-    "icon": "🩺",
-    "subcategorias": {
-      "medidores": {
-        "label": "Medidores",
-        "keywords": ["pressao", "termometro", "glicose", "oximetro", "balanca", "inalador", "nebulizador", "umidificador"],
-        "marcas": ["omron", "g-tech", "accu-chek"]
-      },
-      "testes": {
-        "label": "Testes Rápidos",
-        "keywords": ["teste gravidez", "teste covid", "autoteste", "tiras glicose"],
-        "marcas": ["confirme", "clearblue"]
-      }
-    }
+    "label": "Aparelhos",
+    "keywords": [
+      "teste gravidez", "teste de gravidez", "teste covid", "autoteste", "tiras glicose",
+      "teste rapido", "teste rápido"
+    ],
+    "marcas": [
+      "confirme", "clearblue", "famivita", "pregtest"
+    ]
   }
 }

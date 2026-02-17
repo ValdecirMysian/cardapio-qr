@@ -1,22 +1,93 @@
 {
-  "ANALGESICOS": "medicamentos/analgesicos",
-  "ANALGESICOS E ANTIPIRETICOS": "medicamentos/analgesicos",
-  "DOR E FEBRE": "medicamentos/analgesicos",
+  "ANALGESICOS": "medicamentos",
+  "ANALGESICOS E ANTIPIRETICOS": "medicamentos",
+  "DOR E FEBRE": "medicamentos",
+  "ANTITERMICOS": "medicamentos",
   
-  "ANTIBIOTICOS": "medicamentos/antibioticos",
-  "ANTI INFECCIOSOS": "medicamentos/antibioticos",
+  "ANTIBIOTICOS": "medicamentos",
+  "ANTIINFLAMATORIOS": "medicamentos",
+  "ANTI-INFLAMATORIOS": "medicamentos",
   
-  "ANTIALERGICOS": "medicamentos/antialergicos",
-  "ANTI-ALERGICOS": "medicamentos/antialergicos",
-  "ANTI HISTAMINICOS": "medicamentos/antialergicos",
+  "ANTIALERGICOS": "medicamentos",
+  "ANTI-ALERGICOS": "medicamentos",
+  "ALERGIAS": "medicamentos",
   
-  "HIGIENE BUCAL": "higiene/oral",
-  "HIGIENE ORAL": "higiene/oral",
-  "DENTAL": "higiene/oral",
+  "GASTROPROTETORES": "medicamentos",
+  "ANTIULCEROSOS": "medicamentos",
+  "GASTRITE": "medicamentos",
+  
+  "ANTIESPASMÓDICOS": "medicamentos",
+  "ANTIESPASMADICOS": "medicamentos",
+  "COLICAS": "medicamentos",
+  
+  "MEDICAMENTOS": "medicamentos",
+  "REMEDIOS": "medicamentos",
+  "FARMACOS": "medicamentos",
+  
+  "VITAMINAS": "suplementos",
+  "SUPLEMENTOS": "suplementos",
+  "POLIVITAMINICOS": "suplementos",
+  "MULTIVITAMINICOS": "suplementos",
+  "SUPLEMENTOS ALIMENTARES": "suplementos",
+  
+  "HIGIENE ORAL": "higiene",
+  "HIGIENE BUCAL": "higiene",
+  "ORAL": "higiene",
+  "BUCAL": "higiene",
+  
+  "HIGIENE PESSOAL": "higiene",
+  "HIGIENE CORPORAL": "higiene",
+  "BANHO": "higiene",
+  
+  "CABELOS": "higiene",
+  "SHAMPOO": "higiene",
+  "CONDICIONADOR": "higiene",
+  
+  "ABSORVENTES": "higiene",
+  "HIGIENE FEMININA": "higiene",
+  "HIGIENE INTIMA": "higiene",
+  
+  "DERMOCOSMETICOS": "dermocosmeticos",
+  "PROTETOR SOLAR": "dermocosmeticos",
+  "SOLAR": "dermocosmeticos",
+  "FPS": "dermocosmeticos",
+  "DERMATOLOGICOS": "dermocosmeticos",
   
   "PERFUMARIA": "perfumaria",
-  "PERFUMES E COLONIAS": "perfumaria",
+  "PERFUMES": "perfumaria",
+  "COLONIAS": "perfumaria",
+  "MAQUIAGEM": "perfumaria",
+  "MAQUIAGENS": "perfumaria",
+  "BELEZA": "perfumaria",
   
-  "FRALDAS DESCARTAVEIS": "bebes/fraldas",
-  "FRALDAS": "bebes/fraldas"
+  "FRALDAS": "fraldas_higiene",
+  "FRALDAS DESCARTAVEIS": "fraldas_higiene",
+  "LENCOS UMEDECIDOS": "fraldas_higiene",
+  "TOALHAS UMEDECIDAS": "fraldas_higiene",
+  
+  "BEBES": "cuidados_bebes",
+  "INFANTIL": "cuidados_bebes",
+  "BEBE": "cuidados_bebes",
+  "MAMADEIRA": "cuidados_bebes",
+  "CHUPETA": "cuidados_bebes",
+  "POMADAS BEBES": "cuidados_bebes",
+  
+  "LEITES": "leites_formulas",
+  "FORMULAS": "leites_formulas",
+  "FORMULAS INFANTIS": "leites_formulas",
+  "NAN": "leites_formulas",
+  "APTAMIL": "leites_formulas",
+  
+  "ORTOPEDIA": "ortopedia",
+  "ORTOPEDICOS": "ortopedia",
+  "MEIAS COMPRESSIVAS": "ortopedia",
+  
+  "CURATIVOS": "primeiros_socorros",
+  "PRIMEIROS SOCORROS": "primeiros_socorros",
+  "BAND-AID": "primeiros_socorros",
+  
+  "EQUIPAMENTOS": "equipamentos",
+  "APARELHOS": "aparelhos",
+  "TESTES": "aparelhos",
+  "TESTE GRAVIDEZ": "aparelhos"
 }
