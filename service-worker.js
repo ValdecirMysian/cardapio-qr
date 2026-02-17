@@ -12,6 +12,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // Ignorar requisições POST (como upload de imagens ou forms)
+    if (event.request.method === 'POST') {
+        return;
+    }
+
     // Estratégia simples: Network first, fallback para cache
     event.respondWith(
         fetch(event.request)

@@ -520,6 +520,11 @@ $qr_code_url = gerarUrlQrCode($farmacia['qr_code_token']);
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="buscar_imagens">
+                            <i class="fas fa-camera me-1"></i> Gestor Imagens
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#configFarmaciaModal">
                             <i class="fas fa-cog me-1"></i> Configurações
                         </a>

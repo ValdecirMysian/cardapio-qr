@@ -474,7 +474,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                         <tr class="<?php echo $rowClass; ?>" id="row-<?php echo $i; ?>">
                             <td>
                                 <!-- Badges Dinâmicos -->
-                                <input type="text" class="form-control form-control-sm border-0 bg-transparent fw-bold" name="nome[<?php echo $i; ?>]" value="<?php echo htmlspecialchars($prod['nome']); ?>">
+                                <div class="d-flex align-items-center mb-1">
+                                    <?php if (!empty($prod['ean'])): ?>
+                                        <div class="me-2 position-relative" style="width: 40px; height: 40px; min-width: 40px;">
+                                            <!-- Tentativa 1: Imagem Padrão de Categoria (Fallback Imediato) -->
+                                            <div class="bg-light rounded border d-flex align-items-center justify-content-center" 
+                                                 style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;">
+                                                 <i class="fas fa-box text-muted"></i>
+                                            </div>
+                                            
+                                            <!-- Tentativa 2: Open Food Facts (Carregamento Assíncrono) -->
+                                            <img src="https://images.openfoodfacts.org/images/products/<?php echo $prod['ean']; ?>/front_pt.200.jpg" 
+                                                 class="img-fluid rounded border shadow-sm position-relative" 
+                                                 style="width: 100%; height: 100%; object-fit: cover; z-index: 2;"
+                                                 onload="this.style.display='block'"
+                                                 onerror="this.style.display='none'">
+                                        </div>
+                                    <?php endif; ?>
+                                    <input type="text" class="form-control form-control-sm border-0 bg-transparent fw-bold p-0" name="nome[<?php echo $i; ?>]" value="<?php echo htmlspecialchars($prod['nome']); ?>">
+                                </div>
                                 
                                 <span class="badge bg-danger badge-anvisa badge-medicamento <?php echo $prod['is_medicamento'] ? '' : 'd-none'; ?>">Medicamento</span>
                                 <span class="badge bg-info badge-anvisa badge-fralda <?php echo $prod['is_fralda'] ? '' : 'd-none'; ?>">Fralda</span>
@@ -664,10 +682,33 @@ function atualizarLinha(selectElement, index) {
 
     if (isFralda) {
         uiFralda.classList.remove('d-none');
+        
+        // Resetar select de tarja se existir
+        var selectTarja = row.querySelector('select[name^="tarja"]');
+        if (selectTarja) selectTarja.value = 'sem_tarja';
+        
+        // Ativar tamanhos padrão
+        var checkboxes = row.querySelectorAll('input[type="checkbox"][name^="tamanhos"]');
+        checkboxes.forEach(cb => cb.checked = true);
+
     } else if (isMedicamento) {
         uiMedicamento.classList.remove('d-none');
+        
+        // Desmarcar tamanhos
+        var checkboxes = row.querySelectorAll('input[type="checkbox"][name^="tamanhos"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        
+        // Se já tinha tarja sugerida (ex: amarela), mantém. Se não, reseta.
+        // Como o JS não sabe a tarja original do backend, vamos deixar o usuário escolher.
     } else {
         uiDefault.classList.remove('d-none');
+        
+        // Resetar tudo
+        var selectTarja = row.querySelector('select[name^="tarja"]');
+        if (selectTarja) selectTarja.value = 'sem_tarja';
+        
+        var checkboxes = row.querySelectorAll('input[type="checkbox"][name^="tamanhos"]');
+        checkboxes.forEach(cb => cb.checked = false);
     }
 }
 </script>

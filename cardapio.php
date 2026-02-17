@@ -139,7 +139,7 @@ function getCategoryIcon($nome) {
     // Mapeamento de palavras-chave para ícones FontAwesome
     if (strpos($n, 'bebê') !== false || strpos($n, 'bebe') !== false) return 'fa-baby';
     if (strpos($n, 'infantil') !== false || strpos($n, 'criança') !== false) return 'fa-child';
-    if (strpos($n, 'leite') !== false || strpos($n, 'fórmula') !== false || strpos($n, 'formula') !== false) return 'fa-prescription-bottle'; // Lata de leite/fórmula
+    if (strpos($n, 'leite') !== false || strpos($n, 'fórmula') !== false || strpos($n, 'formula') !== false) return 'fa-baby-bottle'; // Mamadeira para leites
     if (strpos($n, 'fralda') !== false) return 'fa-baby';
     
     if (strpos($n, 'medicamento') !== false || strpos($n, 'fármaco') !== false || strpos($n, 'remedio') !== false || strpos($n, 'remédio') !== false) return 'fa-pills';
@@ -1510,7 +1510,7 @@ function getCategoryIcon($nome) {
                                 <img src="<?= e($prod['imagem']) ?>" style="height: 150px; object-fit: contain;" alt="<?= e($prod['nome']) ?>">
                             <?php else: ?>
                                 <div class="d-flex align-items-center justify-content-center bg-light rounded" style="height: 150px;">
-                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                    <i class="fas <?= getCategoryIcon($prod['nome']) ?> fa-3x text-secondary opacity-50"></i>
                                 </div>
                             <?php endif; ?>
                             <span class="badge bg-danger position-absolute top-0 start-0">Promoção</span>
@@ -1640,6 +1640,39 @@ function getCategoryIcon($nome) {
                 }
             }
 
+            function getCategoryIconJS(name) {
+                const n = name.toLowerCase();
+                if (n.includes('bebê') || n.includes('bebe')) return 'fa-baby';
+                if (n.includes('infantil') || n.includes('criança')) return 'fa-child';
+                if (n.includes('leite') || n.includes('fórmula') || n.includes('formula')) return 'fa-baby-bottle';
+                if (n.includes('fralda')) return 'fa-baby';
+                
+                if (n.includes('medicamento') || n.includes('fármaco') || n.includes('remedio') || n.includes('remédio')) return 'fa-pills';
+                if (n.includes('genérico') || n.includes('generico')) return 'fa-tablets';
+                if (n.includes('antibiótico')) return 'fa-bacteria';
+                if (n.includes('xarope')) return 'fa-prescription-bottle';
+                
+                if (n.includes('perfumaria') || n.includes('perfume')) return 'fa-spray-can';
+                if (n.includes('higiene') || n.includes('banho') || n.includes('sabonete')) return 'fa-pump-soap';
+                if (n.includes('beleza') || n.includes('cosmético') || n.includes('maquiagem')) return 'fa-magic';
+                if (n.includes('cabelo') || n.includes('shampoo')) return 'fa-spray-can';
+                if (n.includes('dermo') || n.includes('pele') || n.includes('rosto') || n.includes('facial')) return 'fa-spa';
+                if (n.includes('solar') || n.includes('sol')) return 'fa-sun';
+                
+                if (n.includes('suplemento') || n.includes('vitamina') || n.includes('academia') || n.includes('whey')) return 'fa-dumbbell';
+                
+                if (n.includes('primeiros socorros') || n.includes('curativo')) return 'fa-first-aid';
+                if (n.includes('aparelho') || n.includes('medidor') || n.includes('termômetro')) return 'fa-stethoscope';
+                if (n.includes('ortopedi')) return 'fa-crutch';
+                
+                if (n.includes('bucal') || n.includes('dente') || n.includes('escova')) return 'fa-tooth';
+                if (n.includes('homem') || n.includes('barba')) return 'fa-mars';
+                if (n.includes('mulher') || n.includes('intima') || n.includes('íntima')) return 'fa-venus';
+                if (n.includes('preservativo')) return 'fa-shield-virus';
+                
+                return 'fa-capsules';
+            }
+
             function renderProducts(products, container) {
                 products.forEach(p => {
                     // Lógica para Tarja
@@ -1659,6 +1692,14 @@ function getCategoryIcon($nome) {
                             <i class="fas fa-info-circle me-1"></i>Ver bula / detalhes
                          </button>` : '';
 
+                    // Lógica de Imagem vs Ícone
+                    let imgHtml = '';
+                    if (p.imagem) {
+                        imgHtml = `<img src="${p.imagem}" class="card-img-top" style="max-height: 100%; object-fit: contain;" onerror="this.parentElement.innerHTML = '<div class=\'d-flex align-items-center justify-content-center bg-light rounded w-100 h-100\'><i class=\'fas ${getCategoryIconJS(p.nome)} fa-4x text-secondary opacity-50\'></i></div>'">`;
+                    } else {
+                        imgHtml = `<div class="d-flex align-items-center justify-content-center bg-light rounded w-100 h-100"><i class="fas ${getCategoryIconJS(p.nome)} fa-4x text-secondary opacity-50"></i></div>`;
+                    }
+
                     let html = `
                     <div class="produto-item" data-promocao="${p.promocao ? 'true' : 'false'}" data-leite="${p.is_leite ? 'true' : 'false'}" data-destaque="${p.destaque ? 'true' : 'false'}" data-name="${p.nome}" data-description="${p.descricao}">
                         <div class="card h-100">
@@ -1667,7 +1708,7 @@ function getCategoryIcon($nome) {
                                 ${p.destaque ? '<span class="badge bg-warning text-dark">Destaque</span>' : ''}
                              </div>
                              <div class="card-img-container" style="height: 200px; display: flex; align-items: center; justify-content: center;">
-                                <img src="${p.imagem || ''}" class="card-img-top" style="max-height: 100%; object-fit: contain;" onerror="this.src='https://via.placeholder.com/150?text=Sem+Imagem'">
+                                ${imgHtml}
                              </div>
                              <div class="card-body d-flex flex-column">
                                 <h5 class="card-title text-truncate mb-1">${p.nome}</h5>
