@@ -9,7 +9,11 @@ error_reporting(E_ALL);
 header("Content-Type: application/xml; charset=UTF-8");
 
 // Ajuste do caminho do banco de dados (estava incorreto)
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 
 // Obter token da URL
 $token = $_GET['token'] ?? '';

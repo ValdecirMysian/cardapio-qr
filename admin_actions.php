@@ -13,7 +13,11 @@ echo "<h1>🕵️ MODO DE DEPURAÇÃO ATIVO</h1>";
 if (!file_exists('../config/database.php')) {
     die("<h2 style='color:red'>ERRO FATAL: Arquivo database.php não encontrado!</h2>");
 }
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 echo "<p>✅ Conexão com banco incluída.</p>";
 
 // 2. Teste de Sessão

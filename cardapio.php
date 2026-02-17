@@ -4,7 +4,11 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 date_default_timezone_set('America/Sao_Paulo'); // Garante fuso horário correto
 
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 require_once 'functions.php';
 
 $token = $_GET['token'] ?? $_GET['t'] ?? '';

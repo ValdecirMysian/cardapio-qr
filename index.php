@@ -16,7 +16,11 @@ ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 session_start();
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 require_once 'functions.php';
 
 // ═══════════════════════════════════════════════════════════

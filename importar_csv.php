@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 require_once 'functions.php';
 require_once 'classes/MotorCategorizacao.php';
 
@@ -298,8 +302,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
     
     $sqlProduto = "INSERT INTO produtos 
         (farmacia_id, categoria_id, nome, preco, estoque_disponivel, mostrar_no_cardapio, ean, 
-         tarja, tem_tamanhos, is_leite, principio_ativo, registro_ms, indicacao, contra_indicacao, exige_receita) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+         tarja, tem_tamanhos, is_leite, principio_ativo, registro_ms, indicacao, contra_indicacao, exige_receita, imagem) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmtProduto = $pdo->prepare($sqlProduto);
     
     $sqlTamanho = "INSERT INTO produto_tamanhos (produto_id, tamanho_id, preco_adicional) VALUES (?, ?, 0.00)";
@@ -338,19 +342,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
         }
 
         try {
-            $stmtProduto->execute([
-                $farmacia['id'],
-                $catFinal,
-                $nomeFinal,
-                $precoFinal,
-                $estoqueFinal,
-                $visivelFinal,
-                $eanFinal,
-                $tarjaFinal,
-                $temTamanhos,
-                $isLeiteFinal,
-                '', '', '', '', $exigeReceita
-            ]);
+                $imagem = null;
+                // Usa o cache do proxy se existir, ou tenta baixar via proxy
+                if (!empty($eanFinal)) {
+                    $cacheFile = 'uploads/cache_img/' . $eanFinal . '.jpg';
+                    $novoNome = "uploads/" . time() . "_" . $eanFinal . ".jpg";
+                    
+                    if (file_exists($cacheFile) && filesize($cacheFile) > 0) {
+                        // Copia do cache
+                        if (copy($cacheFile, $novoNome)) {
+                            $imagem = $novoNome;
+                        }
+                    } else {
+                        // Tenta forçar o proxy (local request)
+                        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+                        $urlProxy = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/buscar_imagem_proxy.php?ean=" . $eanFinal;
+                        
+                        $conteudo = @file_get_contents($urlProxy);
+                        if ($conteudo && strlen($conteudo) > 1000) {
+                            if (file_put_contents($novoNome, $conteudo)) {
+                                $imagem = $novoNome;
+                            }
+                        }
+                    }
+                }
+
+                $stmtProduto->execute([
+                    $farmacia['id'],
+                    $catFinal,
+                    $nomeFinal,
+                    $precoFinal,
+                    $estoqueFinal,
+                    $visivelFinal,
+                    $eanFinal,
+                    $tarjaFinal,
+                    $temTamanhos,
+                    $isLeiteFinal,
+                    '', '', '', '', $exigeReceita,
+                    $imagem 
+                ]);
             
             $novoId = $pdo->lastInsertId();
             
@@ -476,21 +506,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                                 <!-- Badges Dinâmicos -->
                                 <div class="d-flex align-items-center mb-1">
                                     <?php if (!empty($prod['ean'])): ?>
-                                        <div class="me-2 position-relative" style="width: 40px; height: 40px; min-width: 40px;">
-                                            <!-- Tentativa 1: Imagem Padrão de Categoria (Fallback Imediato) -->
-                                            <div class="bg-light rounded border d-flex align-items-center justify-content-center" 
-                                                 style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;">
-                                                 <i class="fas fa-box text-muted"></i>
-                                            </div>
-                                            
-                                            <!-- Tentativa 2: Open Food Facts (Carregamento Assíncrono) -->
-                                            <img src="https://images.openfoodfacts.org/images/products/<?php echo $prod['ean']; ?>/front_pt.200.jpg" 
-                                                 class="img-fluid rounded border shadow-sm position-relative" 
-                                                 style="width: 100%; height: 100%; object-fit: cover; z-index: 2;"
-                                                 onload="this.style.display='block'"
-                                                 onerror="this.style.display='none'">
-                                        </div>
-                                    <?php endif; ?>
+                                <div class="me-2 position-relative" style="width: 40px; height: 40px; min-width: 40px;">
+                                    <!-- Tentativa 1: Imagem Padrão de Categoria (Fallback Imediato) -->
+                                    <div class="bg-light rounded border d-flex align-items-center justify-content-center" 
+                                         style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;">
+                                         <i class="fas fa-box text-muted"></i>
+                                    </div>
+                                    
+                                    <!-- Tentativa via Proxy Inteligente (OFF -> OBF -> Google) -->
+                                    <img src="buscar_imagem_proxy.php?ean=<?php echo $prod['ean']; ?>" 
+                                         class="img-fluid rounded border shadow-sm position-relative" 
+                                         style="width: 100%; height: 100%; object-fit: cover; z-index: 2;"
+                                         onerror="this.style.display='none'">
+                                </div>
+                            <?php endif; ?>
                                     <input type="text" class="form-control form-control-sm border-0 bg-transparent fw-bold p-0" name="nome[<?php echo $i; ?>]" value="<?php echo htmlspecialchars($prod['nome']); ?>">
                                 </div>
                                 

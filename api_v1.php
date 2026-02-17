@@ -4,7 +4,11 @@ header("Access-Control-Allow-Methods: POST, GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 
 // --- CONFIGURAÇÕES ---
 $RATE_LIMIT = 100; // Requisições por minuto

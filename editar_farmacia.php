@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 require_once 'functions.php';
 
 // Verificar se o usuário está logado

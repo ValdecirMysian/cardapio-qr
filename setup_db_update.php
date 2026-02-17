@@ -1,5 +1,9 @@
 <?php
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 
 try {
     echo "Iniciando atualização do banco de dados...<br>";

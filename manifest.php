@@ -7,7 +7,11 @@
 header('Content-Type: application/manifest+json');
 header('Cache-Control: public, max-age=86400');
 
-require_once '../config/database.php';
+if (file_exists(__DIR__ . '/../config/database.php')) {
+    require_once __DIR__ . '/../config/database.php';
+} else {
+    require_once __DIR__ . '/config/database.php';
+}
 
 $token = $_GET['token'] ?? $_GET['t'] ?? '';
 
