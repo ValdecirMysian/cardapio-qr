@@ -1,0 +1,22 @@
+{
+  "ANALGESICOS": "medicamentos/analgesicos",
+  "ANALGESICOS E ANTIPIRETICOS": "medicamentos/analgesicos",
+  "DOR E FEBRE": "medicamentos/analgesicos",
+  
+  "ANTIBIOTICOS": "medicamentos/antibioticos",
+  "ANTI INFECCIOSOS": "medicamentos/antibioticos",
+  
+  "ANTIALERGICOS": "medicamentos/antialergicos",
+  "ANTI-ALERGICOS": "medicamentos/antialergicos",
+  "ANTI HISTAMINICOS": "medicamentos/antialergicos",
+  
+  "HIGIENE BUCAL": "higiene/oral",
+  "HIGIENE ORAL": "higiene/oral",
+  "DENTAL": "higiene/oral",
+  
+  "PERFUMARIA": "perfumaria",
+  "PERFUMES E COLONIAS": "perfumaria",
+  
+  "FRALDAS DESCARTAVEIS": "bebes/fraldas",
+  "FRALDAS": "bebes/fraldas"
+}

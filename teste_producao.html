@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de API em Produção - Mediz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding: 20px; }
+        .card { box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: none; border-radius: 10px; }
+        .console { background: #1e1e1e; color: #00ff00; font-family: 'Courier New', monospace; padding: 15px; border-radius: 5px; min-height: 200px; max-height: 400px; overflow-y: auto; white-space: pre-wrap; font-size: 0.9rem; }
+        .status-badge { font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 800px;">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-primary">🧪 Teste de API - Produção</h3>
+            <p class="text-muted">Simulador de ERP para validar integração em tempo real</p>
+        </div>
+
+        <!-- Passo 1: Configuração -->
+        <div class="card mb-4">
+            <div class="card-header bg-white fw-bold">
+                1. Configuração do Teste
+            </div>
+            <div class="card-body">
+                <form id="testForm">
+                    <div class="mb-3">
+                        <label class="form-label">Token da Farmácia (Mediz)</label>
+                        <input type="text" class="form-control" id="token" placeholder="Cole o token da farmácia aqui" required>
+                        <div class="form-text">Você encontra isso no painel, em "Configurações da Farmácia" ou na URL do cardápio.</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">EAN do Produto (Código de Barras)</label>
+                            <input type="text" class="form-control" id="ean" placeholder="Ex: 789123456" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">SKU Externo (Opcional)</label>
+                            <input type="text" class="form-control" id="sku" placeholder="Código interno do ERP">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Novo Preço (R$)</label>
+                            <input type="number" step="0.01" class="form-control" id="price" value="19.99">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Novo Estoque</label>
+                            <input type="number" class="form-control" id="stock" value="10">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sync-alt me-2"></i> Enviar Atualização para API
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Passo 2: Resultado -->
+        <div class="card">
+            <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
+                <span>2. Console de Execução</span>
+                <span id="statusBadge" class="badge bg-secondary status-badge">Aguardando</span>
+            </div>
+            <div class="card-body bg-dark rounded-bottom p-0">
+                <div id="consoleOutput" class="console">Aguardando comando...</div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="logs_integracao.php" target="_blank" class="btn btn-outline-secondary btn-sm">Ver Logs no Painel</a>
+            <a href="estoque_rapido.php" target="_blank" class="btn btn-outline-secondary btn-sm">Ver Estoque Rápido</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const consoleDiv = document.getElementById('consoleOutput');
+            const statusBadge = document.getElementById('statusBadge');
+            const btn = this.querySelector('button');
+            
+            // Dados do formulário
+            const token = document.getElementById('token').value.trim();
+            const ean = document.getElementById('ean').value.trim();
+            const sku = document.getElementById('sku').value.trim();
+            const price = parseFloat(document.getElementById('price').value);
+            const stock = parseInt(document.getElementById('stock').value);
+
+            // Preparar UI
+            btn.disabled = true;
+            btn.innerHTML = 'Enviando...';
+            statusBadge.className = 'badge bg-warning text-dark status-badge';
+            statusBadge.textContent = 'Processando';
+            consoleDiv.innerHTML = `[${new Date().toLocaleTimeString()}] Iniciando teste...\n`;
+            consoleDiv.innerHTML += `[INFO] Token: ${token.substring(0, 10)}...\n`;
+            consoleDiv.innerHTML += `[INFO] Produto: EAN ${ean} | Preço R$ ${price} | Estoque ${stock}\n`;
+
+            // Payload da API
+            // const payload = { ... }; // Não vamos mais enviar JSON no corpo por enquanto
+
+            try {
+                // Montar URL com parâmetros Query String (GET) para contornar firewall
+                const baseUrl = 'api_v1.php';
+                const params = new URLSearchParams({
+                    token: token,
+                    ean: ean,
+                    sku_externo: sku,
+                    preco: price,
+                    estoque: stock
+                });
+                
+                const finalUrl = `${baseUrl}?${params.toString()}`;
+
+                consoleDiv.innerHTML += `[REQ] Enviando GET para: ${finalUrl}\n`;
+                
+                const response = await fetch(finalUrl, {
+                    method: 'GET', // Mudança para GET
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                consoleDiv.innerHTML += `[RES] Status HTTP: ${response.status}\n`;
+                
+                const data = await response.json();
+                consoleDiv.innerHTML += `[RES] Resposta: ${JSON.stringify(data, null, 2)}\n`;
+
+                if (response.ok && data.updated > 0) {
+                    statusBadge.className = 'badge bg-success status-badge';
+                    statusBadge.textContent = 'Sucesso';
+                    consoleDiv.innerHTML += `\n✅ SUCESSO! O produto foi atualizado.\n`;
+                    consoleDiv.innerHTML += `👉 Verifique no "Estoque Rápido" ou no "Cardápio" se o valor mudou.`;
+                } else if (response.ok && data.updated === 0) {
+                    statusBadge.className = 'badge bg-warning text-dark status-badge';
+                    statusBadge.textContent = 'Sem Alterações';
+                    consoleDiv.innerHTML += `\n⚠️ ATENÇÃO: A API respondeu OK, mas nenhum produto foi atualizado.\n`;
+                    consoleDiv.innerHTML += `👉 Verifique se o EAN "${ean}" existe no banco de dados da farmácia correspondente ao token.`;
+                } else {
+                    throw new Error(data.message || 'Erro desconhecido na API');
+                }
+
+            } catch (error) {
+                statusBadge.className = 'badge bg-danger status-badge';
+                statusBadge.textContent = 'Erro';
+                consoleDiv.innerHTML += `\n❌ ERRO: ${error.message}\n`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sync-alt me-2"></i> Enviar Atualização para API';
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>

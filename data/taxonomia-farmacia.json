@@ -1,0 +1,180 @@
+{
+  "medicamentos": {
+    "label": "Medicamentos",
+    "icon": "💊",
+    "subcategorias": {
+      "analgesicos": {
+        "label": "Analgésicos e Antitérmicos",
+        "keywords": ["dipirona", "paracetamol", "ibuprofeno", "aspirina", "dor", "febre"],
+        "marcas": ["neosaldina", "tylenol", "advil"],
+        "principios_ativos": ["dipirona sodica", "paracetamol", "ibuprofeno"]
+      },
+      "antibioticos": {
+        "label": "Antibióticos",
+        "keywords": ["amoxicilina", "azitromicina", "cefalexina", "antibiotico"],
+        "marcas": ["amoxil", "azitromicina", "clavulin"],
+        "sufixos": ["cilina", "micina", "xacina"]
+      },
+      "antialergicos": {
+        "label": "Antialérgicos",
+        "keywords": ["loratadina", "desloratadina", "allegra", "alergia", "histamin"],
+        "marcas": ["allegra", "claritin", "zyrtec"]
+      }
+    }
+  },
+  "higiene": {
+    "label": "Higiene Pessoal",
+    "icon": "🧴",
+    "subcategorias": {
+      "oral": {
+        "label": "Higiene Bucal",
+        "keywords": ["escova", "creme dental", "pasta", "fio dental", "enxaguante", "bucal", "dental", "antisseptico", "higiene"],
+        "marcas": ["colgate", "oral-b", "sensodyne", "listerine", "sorriso", "curaprox"]
+      },
+      "corporal": {
+        "label": "Higiene Corporal",
+        "keywords": ["sabonete", "desodorante", "shampoo", "condicionador", "gel banho", "antitranspirante", "aerosol", "roll-on", "intimo", "intima", "absorvente", "papel higienico", "lenco", "algodao", "cotonete", "haste"],
+        "marcas": ["dove", "nivea", "rexona", "johnson", "seda", "pantene", "intimus", "always", "neve"]
+      },
+      "barba": {
+        "label": "Barba e Depilação",
+        "keywords": ["barbear", "espuma", "lamina", "gillette", "pos-barba", "depilatorio", "cera"],
+        "marcas": ["gillette", "bozzano", "nivea men", "bic"]
+      }
+    }
+  },
+  "suplementos": {
+    "label": "Vitaminas e Suplementos",
+    "icon": "💪",
+    "subcategorias": {
+      "vitaminas": {
+        "label": "Vitaminas e Minerais",
+        "keywords": ["vitamina", "complexo b", "polivitaminico", "multivitaminico", "calcio", "ferro", "magnesio", "zinco", "omega 3", "lavitan", "centrum", "suplevit"],
+        "marcas": ["lavitan", "centrum", "suplevit", "bayer", "cimede"]
+      },
+      "academia": {
+        "label": "Nutrição Esportiva",
+        "keywords": ["whey", "creatina", "bcaa", "proteina", "albumina", "pre-treino", "glutamina", "hipercalorico"],
+        "marcas": ["max titanium", "integralmedica", "probiotica", "darkness"]
+      }
+    }
+  },
+  "leites_formulas": {
+    "label": "Leites e Fórmulas",
+    "icon": "🍼",
+    "subcategorias": {
+      "formulas": {
+        "label": "Fórmulas Infantis",
+        "keywords": ["formula", "infantil", "nan", "aptamil", "nestogeno", "enfamil", "milnutri", "ninho", "neslac", "mucilon", "leite em po", "composto lacteo", "aptamil pro", "aptamil profutura", "aptamil premium", "nan supreme", "nan comfor", "nan sensitive", "nan soja", "nan lac", "novamil", "pregomim", "alfamino", "neocate"],
+        "marcas": ["nestle", "danone", "mead johnson"]
+      }
+    }
+  },
+  "bebes": {
+    "label": "Bebês e Infantil",
+    "icon": "👶",
+    "subcategorias": {
+      "fraldas": {
+        "label": "Fraldas",
+        "keywords": ["fralda", "fralda descartavel", "fr", "fr.", "fral"],
+        "marcas": ["pampers", "huggies", "cremer", "turma monica", "babysec", "pompom", "mamypoko"],
+        "tamanhos": ["rn", "p", "m", "g", "xg", "xxg"]
+      }
+    }
+  },
+  "perfumaria": {
+    "label": "Perfumaria e Beleza",
+    "icon": "💄",
+    "subcategorias": {
+      "perfumes": {
+        "label": "Perfumes e Colônias",
+        "keywords": ["perfume", "colonia", "deo colonia", "eau de toilette", "fragrancia", "body splash", "desodorante colonia", "parfum", "presente", "kit"],
+        "marcas": ["boticario", "natura", "avon", "jequiti", "calvin klein", "carolina herrera", "eudora", "quem disse berenice"]
+      },
+      "maquiagem": {
+        "label": "Maquiagem",
+        "keywords": ["batom", "rimel", "base", "po facial", "sombra", "delineador", "esmalte", "corretivo", "blush", "iluminador", "primer", "fixador", "pincel"],
+        "marcas": ["vult", "dailus", "maybelline", "risqué", "colorama", "tracta", "boca rosa", "mari maria"]
+      },
+      "skincare": {
+        "label": "Cuidados com a Pele",
+        "keywords": ["hidratante", "anti-idade", "agua micelar", "esfoliante", "mascara facial", "serum", "vitamina c", "acido hialuronico", "protetor solar", "solar", "fps"],
+        "marcas": ["nivea", "neutrogena", "loreal", "garnier", "la roche", "vichy", "cerave"]
+      },
+      "cabelos": {
+        "label": "Tratamento Capilar",
+        "keywords": ["tintura", "coloracao", "tonalizante", "mascara capilar", "oleo capilar", "reparador", "creme pentear", "leave-in"],
+        "marcas": ["loreal", "garnier", "niely", "koleston", "cor e ton"]
+      }
+    }
+  },
+  "dermocosmeticos": {
+    "label": "Dermocosméticos",
+    "icon": "✨",
+    "subcategorias": {
+      "rosto": {
+        "label": "Rosto",
+        "keywords": ["anti-idade", "rugas", "clareador", "acne", "oleosidade", "limpeza facial", "agua termal", "dermo"],
+        "marcas": ["la roche-posay", "vichy", "skinceuticals", "roc", "bioderma", "avene"]
+      },
+      "corpo": {
+        "label": "Corpo",
+        "keywords": ["hidratante corporal", "celulite", "estrias", "reafirmante"],
+        "marcas": ["cerave", "cetaphil", "isdin"]
+      },
+      "solar": {
+        "label": "Proteção Solar",
+        "keywords": ["protetor solar", "bloqueador", "pos-sol", "bronzeador", "fps 30", "fps 50", "fps 70"],
+        "marcas": ["anasol", "sundown", "loreal solar", "episol", "minesol"]
+      }
+    }
+  },
+  "ortopedia": {
+    "label": "Ortopedia e Acessórios",
+    "icon": "🩼",
+    "subcategorias": {
+      "imobilizadores": {
+        "label": "Imobilizadores",
+        "keywords": ["joelheira", "tornozeleira", "munhequeira", "tipoia", "colar cervical", "cinta", "faixa"],
+        "marcas": ["mercur", "hidrolight", "ortofly"]
+      },
+      "meias": {
+        "label": "Meias Compressivas",
+        "keywords": ["meia compressiva", "meia elastica", "kendall", "sigvaris"],
+        "marcas": ["kendall", "sigvaris", "venosan"]
+      },
+      "bengalas": {
+        "label": "Auxilio Locomoção",
+        "keywords": ["bengala", "muleta", "andador"],
+        "marcas": ["mercur", "dullio"]
+      }
+    }
+  },
+  "primeiros_socorros": {
+    "label": "Primeiros Socorros",
+    "icon": "🩹",
+    "subcategorias": {
+      "curativos": {
+        "label": "Curativos",
+        "keywords": ["band-aid", "curativo", "esparadrapo", "gaze", "atadura", "micropore", "algodao", "antisseptico", "agua oxigenada", "alcool 70", "povidine", "merthiolate"],
+        "marcas": ["band-aid", "cremer", "neve", "mercur"]
+      }
+    }
+  },
+  "aparelhos": {
+    "label": "Aparelhos e Testes",
+    "icon": "🩺",
+    "subcategorias": {
+      "medidores": {
+        "label": "Medidores",
+        "keywords": ["pressao", "termometro", "glicose", "oximetro", "balanca", "inalador", "nebulizador", "umidificador"],
+        "marcas": ["omron", "g-tech", "accu-chek"]
+      },
+      "testes": {
+        "label": "Testes Rápidos",
+        "keywords": ["teste gravidez", "teste covid", "autoteste", "tiras glicose"],
+        "marcas": ["confirme", "clearblue"]
+      }
+    }
+  }
+}
