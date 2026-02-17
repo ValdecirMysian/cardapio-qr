@@ -355,10 +355,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                         }
                     } else {
                         // Tenta forçar o proxy (local request)
-                        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-                        $urlProxy = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/buscar_imagem_proxy.php?ean=" . $eanFinal;
-                        
-                        $conteudo = @file_get_contents($urlProxy);
+                         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+                         $urlProxy = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/buscar_imagem_proxy.php?ean=" . $eanFinal . "&nome=" . urlencode($nomeFinal);
+                         
+                         $conteudo = @file_get_contents($urlProxy);
                         if ($conteudo && strlen($conteudo) > 1000) {
                             if (file_put_contents($novoNome, $conteudo)) {
                                 $imagem = $novoNome;
@@ -514,9 +514,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_importacao']
                                     </div>
                                     
                                     <!-- Tentativa via Proxy Inteligente (OFF -> OBF -> Google) -->
-                                    <img src="buscar_imagem_proxy.php?ean=<?php echo $prod['ean']; ?>" 
+                                    <img src="buscar_imagem_proxy.php?ean=<?php echo $prod['ean']; ?>&nome=<?php echo urlencode($prod['nome']); ?>&v=<?php echo time(); ?>" 
                                          class="img-fluid rounded border shadow-sm position-relative" 
                                          style="width: 100%; height: 100%; object-fit: cover; z-index: 2;"
+                                         loading="lazy"
                                          onerror="this.style.display='none'">
                                 </div>
                             <?php endif; ?>
